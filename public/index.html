@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="TaskFlow — a colorful, modern full-stack task management dashboard.">
+  <meta name="theme-color" content="#0E2430">
+  <title>TaskFlow — Smart To-Do Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Condensed:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="ambient ambient-one"></div>
+  <div class="ambient ambient-two"></div>
+  <div class="ambient ambient-three"></div>
+
+  <main class="app-shell">
+    <header class="topbar glass-panel">
+      <div class="brand-area">
+        <div class="brand-mark" aria-hidden="true">
+          <span></span><span></span><span></span>
+        </div>
+        <div>
+          <p class="eyebrow">YOUR PRODUCTIVITY SPACE</p>
+          <h1>Task<span>Flow</span></h1>
+          <p class="subtitle">Organize your work, own your day, and keep every task moving.</p>
+        </div>
+      </div>
+      <div class="top-actions">
+        <div class="live-pill"><i></i> Live workspace</div>
+        <button id="themeBtn" class="ghost-btn" type="button" aria-label="Toggle theme">◐</button>
+        <button id="newTaskBtn" class="primary-btn" type="button"><span class="btn-plus">+</span> New Task</button>
+      </div>
+    </header>
+
+    <section class="hero-grid">
+      <article class="welcome-card gradient-card">
+        <div class="hero-copy">
+          <p class="eyebrow light">TODAY'S FLOW</p>
+          <h2>Turn plans into <em>progress.</em></h2>
+          <p>Small wins build momentum. Keep your priorities visible and your next action clear.</p>
+          <button id="heroNewBtn" class="primary-btn hero-cta" type="button"><span class="btn-plus">+</span> Add a task</button>
+        </div>
+        <div class="orbital" aria-hidden="true">
+          <div class="orbital-ring ring-a"></div>
+          <div class="orbital-ring ring-b"></div>
+          <div class="orbital-core">TF</div>
+        </div>
+      </article>
+
+      <article class="focus-card glass-card">
+        <div class="section-topline">
+          <div>
+            <p class="eyebrow">FOCUS SCORE</p>
+            <h3><span id="progressPercent">0</span>% complete</h3>
+          </div>
+          <button id="focusInfoBtn" class="mini-icon purple" type="button" aria-label="Learn how Focus Score is calculated" title="Learn how Focus Score is calculated"><span aria-hidden="true">ⓘ</span></button>
+        </div>
+        <div class="progress-track" aria-label="Task completion progress">
+          <div id="progressBar" class="progress-bar"></div>
+        </div>
+        <p class="muted small" id="progressText">Create your first task to get started.</p>
+        <div class="focus-footer">
+          <span>Completed</span>
+          <strong id="focusCompleted">0</strong>
+          <span>of</span>
+          <strong id="focusTotal">0</strong>
+        </div>
+      </article>
+    </section>
+
+    <section class="stats-grid" aria-label="Task statistics">
+      <article class="stat-card stat-violet glass-card">
+        <div class="stat-icon">☷</div>
+        <div><span>Total tasks</span><strong id="totalCount">0</strong><small>Everything in your workspace</small></div>
+      </article>
+      <article class="stat-card stat-blue glass-card">
+        <div class="stat-icon">◷</div>
+        <div><span>Pending</span><strong id="pendingCount">0</strong><small>Tasks waiting for action</small></div>
+      </article>
+      <article class="stat-card stat-green glass-card">
+        <div class="stat-icon">✓</div>
+        <div><span>Completed</span><strong id="completedCount">0</strong><small>Wins already checked off</small></div>
+      </article>
+      <article class="stat-card stat-orange glass-card">
+        <div class="stat-icon">!</div>
+        <div><span>High priority</span><strong id="highCount">0</strong><small>Pending tasks needing focus</small></div>
+      </article>
+    </section>
+
+    <section class="workspace glass-panel">
+      <div class="workspace-header">
+        <div>
+          <p class="eyebrow">TASK BOARD</p>
+          <h2>Stay on top of it</h2>
+        </div>
+        </div>
+
+      <div class="toolbar" aria-label="Task filters">
+        <div class="search-wrap">
+          <span class="search-icon" aria-hidden="true">⌕</span>
+          <label class="sr-only" for="searchInput">Search tasks</label>
+          <input id="searchInput" type="search" placeholder="Search by title or description..." autocomplete="off">
+        </div>
+        <label class="select-wrap">
+          <span class="sr-only">Status</span>
+          <span class="select-label">Status</span>
+          <select id="statusFilter">
+            <option value="all">All status</option>
+            <option value="pending">Pending</option>
+            <option value="completed">Completed</option>
+          </select>
+        </label>
+        <label class="select-wrap">
+          <span class="sr-only">Priority</span>
+          <span class="select-label">Priority</span>
+          <select id="priorityFilter">
+            <option value="all">All priority</option>
+            <option value="high">High</option>
+            <option value="medium">Medium</option>
+            <option value="low">Low</option>
+          </select>
+        </label>
+        <div class="view-chip" aria-label="Task save status"><span class="dot"></span> Auto-saved locally</div>
+      </div>
+
+      <div class="board-labels">
+        <span>YOUR TASKS</span>
+        <span id="visibleTaskCount">0 tasks</span>
+      </div>
+
+      <section>
+        <div id="loading" class="state-card loading-state">
+          <div class="loader"><span></span><span></span><span></span></div>
+          <strong>Loading your workspace</strong>
+          <p>Bringing your tasks into view...</p>
+        </div>
+        <div id="emptyState" class="state-card hidden">
+          <div class="empty-icon">✦</div>
+          <h2>No matching tasks</h2>
+          <p>No tasks match the current view. Adjust your filters or create a new task.</p>
+          <div class="empty-actions">
+            <button id="clearFiltersBtn" class="link-btn hidden" type="button">Clear all filters</button>
+            <button id="emptyNewBtn" class="primary-btn" type="button">Create a task</button>
+          </div>
+        </div>
+        <div id="taskList" class="task-list" aria-live="polite"></div>
+      </section>
+    </section>
+
+    <footer class="footer-note">
+      <span>TaskFlow</span><span>•</span><span>Full-stack task management</span><span>•</span><span>Fast, responsive &amp; colorful</span>
+    </footer>
+  </main>
+
+  <dialog id="taskDialog">
+    <form id="taskForm" method="dialog" novalidate>
+      <div class="dialog-glow"></div>
+      <div class="dialog-header">
+        <div>
+          <p class="eyebrow">TASK EDITOR</p>
+          <h2 id="dialogTitle">Create Task</h2>
+          <p class="muted">Give your next action a clear home.</p>
+        </div>
+        <button id="closeDialogBtn" class="icon-btn close-btn" type="button" aria-label="Close">✕</button>
+      </div>
+
+      <input id="taskId" type="hidden">
+
+      <div class="form-group">
+        <label for="titleInput">Task title <span>*</span></label>
+        <input id="titleInput" maxlength="120" placeholder="e.g. Finish project documentation" required>
+        <small class="error" id="titleError"></small>
+      </div>
+
+      <div class="form-group">
+        <label for="descriptionInput">Description</label>
+        <textarea id="descriptionInput" maxlength="1000" rows="4" placeholder="Add useful details, notes, links or a next step..."></textarea>
+        <small class="error" id="descriptionError"></small>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="priorityInput">Priority</label>
+          <select id="priorityInput">
+            <option value="low">Low</option>
+            <option value="medium" selected>Medium</option>
+            <option value="high">High</option>
+          </select>
+          <small class="error" id="priorityError"></small>
+        </div>
+        <div class="form-group">
+          <label for="dueDateInput">Due date</label>
+          <input id="dueDateInput" type="date">
+          <small class="error" id="due_dateError"></small>
+        </div>
+      </div>
+
+      <div class="dialog-actions">
+        <button id="cancelBtn" class="secondary-btn" type="button">Cancel</button>
+        <button id="saveBtn" class="primary-btn" type="submit">Save Task <span>→</span></button>
+      </div>
+    </form>
+  </dialog>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <div id="confetti" class="confetti-layer" aria-hidden="true"></div>
+  <script src="app.js"></script>
+</body>
+</html>
